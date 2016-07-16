@@ -1,3 +1,3 @@
 # MendelLocationScores
 
-[![Build Status](https://travis-ci.org/ericsobel/MendelLocationScores.jl.svg?branch=master)](https://travis-ci.org/ericsobel/MendelLocationScores.jl)
+[![Build Status](https://travis-ci.org/OpenMendel/MendelLocationScores.jl.svg?branch=master)](https://travis-ci.org/OpenMendel/MendelLocationScores.jl)
