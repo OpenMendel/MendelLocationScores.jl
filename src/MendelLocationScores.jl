@@ -3,18 +3,19 @@ This module orchestrates linkage analysis via location scores.
 """
 module MendelLocationScores
 #
-# Other OpenMendel modules.
+# Required OpenMendel packages and modules.
 #
 using MendelBase
-# using DataStructures
-# using ModelConstruction
-# using ElstonStewartPreparation
-# using ElstonStewartEvaluation
-# using Optimize
+# using DataStructures                  # Now in MendelBase.
+# using ModelConstruction               # Now in MendelBase.
+# using ElstonStewartPreparation        # Now in MendelBase.
+# using ElstonStewartEvaluation         # Now in MendelBase.
+using Search
+using SearchSetup
 #
-# External modules.
+# Required external modules.
 #
-using DataFrames    # From package DataFrames.
+using DataFrames                        # From package DataFrames.
 
 export LocationScores
 
@@ -40,9 +41,14 @@ function LocationScores(control_file = ""; args...)
   #
   keyword = set_keyword_defaults!(Dict{ASCIIString, Any}())
   #
-  # Keywords unique to this analysis may be defined here
+  # Keywords unique to this analysis should be first defined here
   # by setting their default values using the format:
-  # keyword["some_keyword_name"] = value
+  # keyword["some_keyword_name"] = default_value
+  #
+  keyword["flanking_distance"] = [0.5, 0.5]
+  keyword["flanking_markers"] = 1
+  keyword["gender_neutral"] = true
+  keyword["lod_score_table"] = "Lod_Score_Frame.txt"
   #
   # Process the run-time user-specified keywords that will control the analysis.
   # This will also initialize the random number generator.
@@ -138,6 +144,7 @@ function location_scores_option(pedigree::Pedigree, person::Person,
       keyword["constraints"] = 1
     end
   end
+  keyword["goal"] = "maximize"
   #
   # Prepare to eliminate genotypes and lump alleles.
   #
