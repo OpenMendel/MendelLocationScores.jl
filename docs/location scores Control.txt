@@ -7,10 +7,9 @@ phenotype_file = location scores PhenotypeFrame.txt
 output_file = location scores Output.txt
 lod-score-table = location scores Table Output.txt
 #
-# Analysis parameters.
+# Analysis parameters for Location Scores option.
 #
-analysis_option = LocationScores
-trait = RADIN
+disease_status = RADIN
 travel = grid
 gender-neutral = false
 standard_errors = true
