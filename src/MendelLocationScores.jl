@@ -113,7 +113,7 @@ function location_scores_option(pedigree::Pedigree, person::Person,
   end
   trait_place = 0
   for l = 1:locus.loci
-    if locus.name[l] == keyword["disease_status"]
+    if locus.name[l] == keyword["trait"]
       trait_place = l
       break
     end
