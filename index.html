@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Mendellocationscores.jl : This analysis option maps a trait via the method of Location Scores, i.e., multipoint linkage analysis.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Mendellocationscores.jl</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/OpenMendel/MendelLocationScores.jl">View on GitHub</a>
+
+          <h1 id="project_title">Mendellocationscores.jl</h1>
+          <h2 id="project_tagline">This analysis option maps a trait via the method of Location Scores, i.e., multipoint linkage analysis.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/OpenMendel/MendelLocationScores.jl/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/OpenMendel/MendelLocationScores.jl/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>Mendel Location Scores is a component of the umbrella <a href="https://openmendel.github.io">OpenMendel</a> project. This package performs multipoint linkage analysis. That is, the analysis considers multiple linked markers in combination when mapping the trait.</p>
+
+<h3>
+<a id="appropriate-problems-and-data-sets" class="anchor" href="#appropriate-problems-and-data-sets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appropriate Problems and Data Sets</h3>
+
+<p>Mendel Location Scores analysis can use sib pairs, nuclear families, or large pedigrees, along with marker and trait data, to localize genes.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p><em>Note: Three OpenMendel packages - <a href="https://github.com/OpenMendel/SnpArrays.jl">SnpArrays</a>, <a href="https://github.com/OpenMendel/Search.jl">Search</a>, and <a href="https://github.com/OpenMendel/MendelBase.jl">MendelBase</a> must be installed before any Mendel analysis packages will run.</em></p>
+
+<p>Within Julia, use the package manager to install Mendel:</p>
+
+<pre><code>Pkg.clone("git@github.com:OpenMendel/MendelLocationScores.jl.git")
+</code></pre>
+
+<p>This package supports Julia v0.4.</p>
+
+<h3>
+<a id="input-files" class="anchor" href="#input-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input Files</h3>
+
+<p>The MendelLocationScores analysis package uses the following input files. Example input files can be found in the <a href="https://github.com/OpenMendel/MendelLocationScores.jl/tree/master/docs">docs</a> subfolder of the MendelLocationScores project. (An analysis won't always need every file type below.)</p>
+
+<ul>
+<li>
+<a href="#control-file">Control File</a>: Specifies the names of your data input and output files and any optional parameters (<em>keywords</em>) for the analysis. (For a list of common keywords, see <a href="https://openmendel.github.io/MendelBase.jl/#keywords-table">Keywords Table</a>).</li>
+<li>
+<a href="https://openmendel.github.io/MendelBase.jl/#locus-file">Locus File</a>: Names and describes the genetic loci in your data.</li>
+<li>
+<a href="https://openmendel.github.io/MendelBase.jl/#pedigree-file">Pedigree File</a>: Gives information about your individuals, such as name, sex, family structure, and ancestry.</li>
+<li>
+<a href="https://openmendel.github.io/MendelBase.jl/#phenotype-file">Phenotype File</a>: Lists the available phenotypes.</li>
+<li>
+<a href="https://openmendel.github.io/MendelBase.jl/#snp-definition-file">SNP Definition File</a>: Defines your SNPs with information such as SNP name, chromosome, position, allele names, allele frequencies.</li>
+<li>
+<a href="https://openmendel.github.io/MendelBase.jl/#snp-data-file">SNP Data File</a>: Holds the genotypes for your data set. Must be a standard binary PLINK BED file in SNP major format. If you have a SNP data file you must have a SNP definition file.</li>
+</ul>
+
+<h3>
+<a id="control-file" class="anchor" href="#control-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Control file<a id="control-file"></a>
+</h3>
+
+<p>The Control file is a text file consisting of keywords and their assigned values. The format of the Control file is:</p>
+
+<pre><code>Keyword = Keyword_Value(s)
+</code></pre>
+
+<p>Below is an example of a simple Control file to run LocationScores:</p>
+
+<pre><code>#
+# Input and Output files.
+#
+locus_file = location scores LocusFrame.txt
+pedigree_file = location scores PedigreeFrame.txt
+phenotype_file = location scores PhenotypeFrame.txt
+output_file = location scores Output.txt
+lod-score-table = location scores Table Output.txt
+#
+# Analysis parameters for Location Scores option.
+#
+disease_status = RADIN
+travel = grid
+gender-neutral = false
+</code></pre>
+
+<p>In the example above, there are eight keywords. Three keywords specify the input files: <em>location scores LocusFrame.txt</em>, <em>location scores PedigreeFrame.txt</em>, and <em>location scores PhenotypeFrame.txt</em>. The next two keywords specify the output files: <em>location scores Output.txt</em> the results file - and <em>location scores Table Output.txt</em> - a table of the location scores. The last three keywords specify analysis parameters. The text after the '=' are the keyword values.</p>
+
+<h3>
+<a id="keywords" class="anchor" href="#keywords" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Keywords<a id="keywords-table"></a>
+</h3>
+
+<p>This is a list of OpenMendel keywords specific to LocationScores. A list of OpenMendel keywords common to most analysis package can be found <a href="https://openmendel.github.io/MendelBase.jl/#keywords-table">here</a>. The names of keywords are <em>not</em> case sensitive. (The keyword values <em>may</em> be case sensitive.)</p>
+
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Default Value</th>
+<th>Allowed Values</th>
+<th>Short Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>flanking_distance</td>
+<td>[0.5, 0.5]</td>
+<td>Real</td>
+<td>Marker flanking distance for location scores</td>
+</tr>
+<tr>
+<td>flanking_markers</td>
+<td>1</td>
+<td>Integer</td>
+<td>Number of flanking markers in imputation window</td>
+</tr>
+<tr>
+<td>gender_neutral</td>
+<td>TRUE</td>
+<td>TRUE, FALSE</td>
+<td>Whether different male/female recombination  fractions are considered</td>
+</tr>
+<tr>
+<td>lod_score_table</td>
+<td>"Lod_Score_Frame.txt"</td>
+<td>User defined output text file name</td>
+<td>Creates a lod score table output file</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="data-files" class="anchor" href="#data-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Files</h3>
+
+<p>LocationScores requires a <a href="https://openmendel.github.io/MendelBase.jl/#control-file">Control file</a>, and a <a href="https://openmendel.github.io/MendelBase.jl/#pedigree-file">Pedigree file</a>. Genotype data is provided in a <a href="https://openmendel.github.io/MendelBase.jl/#snp-data-file">SNP data file</a>, with a <a href="https://openmendel.github.io/MendelBase.jl/#snp-definition-file">SNP Definition File</a> describing the SNPs. OpenMendel will also accept <a href="http://pngu.mgh.harvard.edu/%7Epurcell/plink/data.shtml">PLINK format</a> FAM and BIM files. Details on the format and contents of the Control and data files can be found on the <a href="https://openmendel.github.io/MendelBase.jl">MendelBase</a> documentation page. There are example data files in the LocationScores <a href="https://github.com/OpenMendel/MendelLocationScores.jl/tree/master/docs">docs</a> folder.</p>
+
+<h3>
+<a id="running-the-analysis" class="anchor" href="#running-the-analysis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running the Analysis</h3>
+
+<p>To run this analysis package, first launch Julia. Then load the package with the command:</p>
+
+<pre><code> julia&gt; using MendelLocationScores
+</code></pre>
+
+<p>Next, if necessary, change to the directory containing your files, for example,</p>
+
+<pre><code> julia&gt; cd("~/path/to/data/files/")
+</code></pre>
+
+<p>Finally, to run the analysis using the parameters in the control file Control_file.txt use the command:</p>
+
+<pre><code> julia&gt; LocationScores("Control_file.txt")
+</code></pre>
+
+<p><em>Note: The package is called</em> MendelLocationScores <em>but the analysis function is called simply</em> LocationScores.</p>
+
+<h3>
+<a id="interpreting-the-results" class="anchor" href="#interpreting-the-results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Interpreting the results</h3>
+
+<h3>
+<a id="citation" class="anchor" href="#citation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Citation</h3>
+
+<p>If you use this analysis package in your research, please cite the following reference in the resulting publications:</p>
+
+<p><em>Lange K, Papp JC, Sinsheimer JS, Sripracha R, Zhou H, Sobel EM (2013) Mendel: The Swiss army knife of genetic analysis programs. Bioinformatics 29:1568-1570.</em></p>
+
+
+
+<h3>
+<a id="acknowledgments" class="anchor" href="#acknowledgments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgments</h3>
+
+<p>This project is supported by the National Institutes of Health under NIGMS awards R01GM053275 and R25GM103774 and NHGRI award R01HG006139.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mendellocationscores.jl maintained by <a href="https://github.com/OpenMendel">OpenMendel</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
