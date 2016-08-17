@@ -9,7 +9,7 @@ lod-score-table = location scores Table Output.txt
 #
 # Analysis parameters for Location Scores option.
 #
-disease_status = RADIN
+trait = RADIN
 travel = grid
 gender-neutral = false
 standard_errors = true
