@@ -10,7 +10,7 @@ This [Julia](http://julialang.org/) package maps a trait via the method of Locat
 
 Within Julia, use the package manager to install MendelLocationScores:
 
-    Pkg.clone("git@github.com:OpenMendel/MendelLocationScores.jl.git")
+    Pkg.clone("https://github.com/OpenMendel/MendelLocationScores.jl.git")
 
 This package supports Julia v0.4.
 
