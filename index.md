@@ -5,13 +5,13 @@ Mendel Location Scores is a component of the umbrella [OpenMendel](https://openm
 Mendel Location Scores analysis can use sib pairs, nuclear families, or large pedigrees, along with marker and trait data, to localize genes.
 
 ### Installation
-*Note: Three OpenMendel packages - [SnpArrays](https://github.com/OpenMendel/SnpArrays.jl), [Search](https://github.com/OpenMendel/Search.jl), and [MendelBase](https://github.com/OpenMendel/MendelBase.jl) must be installed before any Mendel analysis packages will run.*
+*Note: The three OpenMendel packages (1) [SnpArrays](https://openmendel.github.io/SnpArrays.jl/latest/), (2) [Search](https://openmendel.github.io/Search.jl), and (3) [MendelBase](https://openmendel.github.io/MendelBase.jl) must be installed before any other OpenMendel package will run. It is easiest if these three packages are installed in the above order and before any other OpenMendel package.*
 
 Within Julia, use the package manager to install Mendel:
 
     Pkg.clone("https://github.com/OpenMendel/MendelLocationScores.jl.git")
 
-This package supports Julia v0.4.
+This package supports Julia v0.4 and v0.5.
 
 ### Input Files
 The MendelLocationScores analysis package uses the following input files. Example input files can be found in the [docs]( https://github.com/OpenMendel/MendelLocationScores.jl/tree/master/docs) subfolder of the MendelLocationScores project. (An analysis won't always need every file type below.)
@@ -76,8 +76,8 @@ Finally, to run the analysis using the parameters in the control file Control_fi
 
 *Note: The package is called* MendelLocationScores *but the analysis function is called simply* LocationScores.
 
-### Interpreting the results
-
+<!--- ### Interpreting the results
+... --->
 
 ### Citation
 
