@@ -1,0 +1,8 @@
+title: MendelLocationScores.jl
+description: This analysis option maps a trait via the method of Location Scores, i.e., multipoint linkage analysis.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
