@@ -72,7 +72,7 @@ Next, if necessary, change to the directory containing your files, for example,
 
      julia> cd("~/path/to/data/files/")
 
-Finally, to run the analysis using the parameters in the control file Control_file.txt use the command:
+Finally, to run the analysis using the parameters in your Control file, for example, Control_file.txt, use the command:
 
      julia> LocationScores("Control_file.txt")
 
