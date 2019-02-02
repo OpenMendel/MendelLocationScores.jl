@@ -1,7 +1,7 @@
  
                 Search, Julia Version
 
-            (c) Copyright Kenneth Lange, 2016
+            (c) Copyright Kenneth Lange, 2019
 
 Title: Location scores for RADIN and the closest flanking marker PGM1
 Grid or search option: grid
@@ -33,7 +33,7 @@ The maximum function value of -293.02292 occurs at iteration 8.
  
                 Search, Julia Version
 
-            (c) Copyright Kenneth Lange, 2016
+            (c) Copyright Kenneth Lange, 2019
 
 Title: Location scores for RADIN and the closest flanking markers PGM1 and RH
 Grid or search option: grid
@@ -65,7 +65,7 @@ The maximum function value of -283.40773 occurs at iteration 7.
  
                 Search, Julia Version
 
-            (c) Copyright Kenneth Lange, 2016
+            (c) Copyright Kenneth Lange, 2019
 
 Title: Location scores for RADIN and the closest flanking marker RH
 Grid or search option: grid

@@ -11,12 +11,12 @@ using MendelBase
 # namely: DataStructures, ModelConstruction,
 # ElstonStewartPreparation, ElstonStewartEvaluation
 using MendelSearch
-using SearchSetup   # From package MendelSearch.
 #
 # Required external modules.
 #
 using CSV
 using DataFrames
+using LinearAlgebra
 
 export LocationScores
 
@@ -25,7 +25,7 @@ This is the wrapper function for the Location Scores analysis option.
 """
 function LocationScores(control_file = ""; args...)
 
-  LOCATION_SCORES_VERSION :: VersionNumber = v"0.1.0"
+  LOCATION_SCORES_VERSION :: VersionNumber = v"0.5.0"
   #
   # Print the logo. Store the initial directory.
   #
