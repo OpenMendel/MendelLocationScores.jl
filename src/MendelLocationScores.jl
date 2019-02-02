@@ -1,3 +1,5 @@
+__precompile__()
+
 """
 This module orchestrates linkage analysis via location scores.
 """
@@ -6,16 +8,15 @@ module MendelLocationScores
 # Required OpenMendel packages and modules.
 #
 using MendelBase
-# using DataStructures                  # Now in MendelBase.
-# using ModelConstruction               # Now in MendelBase.
-# using ElstonStewartPreparation        # Now in MendelBase.
-# using ElstonStewartEvaluation         # Now in MendelBase.
-using Search
-using SearchSetup
+# namely: DataStructures, ModelConstruction,
+# ElstonStewartPreparation, ElstonStewartEvaluation
+using MendelSearch
+using SearchSetup   # From package MendelSearch.
 #
 # Required external modules.
 #
-using DataFrames                        # From package DataFrames.
+using CSV
+using DataFrames
 
 export LocationScores
 
@@ -24,7 +25,7 @@ This is the wrapper function for the Location Scores analysis option.
 """
 function LocationScores(control_file = ""; args...)
 
-  const LOCATION_SCORES_VERSION :: VersionNumber = v"0.1.0"
+  LOCATION_SCORES_VERSION :: VersionNumber = v"0.1.0"
   #
   # Print the logo. Store the initial directory.
   #
@@ -190,7 +191,7 @@ function location_scores_option(pedigree::Pedigree, person::Person,
       locus.model_locus[j] = locus.model_locus[j - 1]
     end
     locus.model_locus[1] = trait_place
-    locus.morgans[:, trait_place] = - Inf
+    locus.morgans[:, trait_place] .= - Inf
     (saved_locus_trait, locus.trait) = (locus.trait, 1)
     keyword["analysis_option"] = "StandardizingLoglikelihood"
     #
@@ -274,16 +275,16 @@ function location_scores_option(pedigree::Pedigree, person::Person,
       continue
     end
     #
-    # Pass the variables to optimize for maximum likelihood estimation.
+    # Pass the variables to search for maximum likelihood estimation.
     #
     function fun(par)
-      copy!(parameter.par, par)
+      copyto!(parameter.par, par)
       f = elston_stewart_loglikelihood(penetrance_location_score,
         prior_location_score, transmission_location_score,
         pedigree, person, locus, parameter, instruction, keyword)
       return (f, nothing, nothing)
     end # function fun
-    (best_par, best_value) = optimize(fun, parameter)
+    (best_par, best_value) = mendel_search(fun, parameter)
     #
     # Insert the results in the data frame.
     #
@@ -301,13 +302,13 @@ function location_scores_option(pedigree::Pedigree, person::Person,
       lod = parameter.function_value[end] - loglikelihood_at_infinity
       lod = log10(exp(1.0)) * lod
       push!(lodscore_frame, [left, locus.name[trait_place], right,
-        100.*parameter.par[1], 100.0*parameter.par[end], lod])
+        100.0 * parameter.par[1], 100.0 * parameter.par[end], lod])
     else
       for i = 1:parameter.points
         lod = parameter.function_value[i] - loglikelihood_at_infinity
         lod = log10(exp(1.0)) * lod
         push!(lodscore_frame, [left, locus.name[trait_place], right,
-          100.0*parameter.grid[i, 1], 100.0*parameter.grid[i, end], lod])
+          100.0 * parameter.grid[i, 1], 100.0 * parameter.grid[i, end], lod])
       end
     end
     #
@@ -316,7 +317,10 @@ function location_scores_option(pedigree::Pedigree, person::Person,
     (locus.trait, locus_list) = update_location_score_markers(locus_list,
       locus.trait, l, locus.loci, flanking_markers)
   end
-  writetable(keyword["lod_score_table"], lodscore_frame)
+  lod_table_file = string(keyword["lod_score_table"])
+  CSV.write(lod_table_file, lodscore_frame;
+    writeheader = true, delim = keyword["output_field_separator"],
+    missingstring = keyword["output_missing_value"])
   show(lodscore_frame)
   return execution_error = false
 end # function location_scores_option
@@ -333,7 +337,8 @@ function update_location_score_markers(list::Vector{Int}, i::Int, l::Int,
 
   if l == loci
     return (i, list)
-  elseif l <= div(flanking_markers,2) || l >= loci - div(flanking_markers + 1, 2)
+  elseif l <= div(flanking_markers,2) ||
+         l >= loci - div(flanking_markers + 1, 2)
     (list[i], list[i + 1]) = (list[i + 1], list[i])
     i = i + 1
   else
@@ -523,7 +528,7 @@ function initialize_optimization_location_score!(locus::Locus,
     parameter.max[end] = locus.morgans[end, left] + d
   end
   if keyword["travel"] == "search"
-    parameter.par = 0.5*(parameter.min + parameter.max)
+    parameter.par = 0.5 * (parameter.min + parameter.max)
     if keyword["gender_neutral"]
       a = (parameter.max[2] - parameter.min[2])
       b = (parameter.max[1] - parameter.min[1])
@@ -535,17 +540,24 @@ function initialize_optimization_location_score!(locus::Locus,
     end
   else
     if parameter.points == 1
-      parameter.grid[1, :] = 0.5*(parameter.min + parameter.max)
+      parameter.grid[1, :] = 0.5 * (parameter.min + parameter.max)
     else
       for j = 1:parameter.points
         a = (j - 1.0) / (parameter.points - 1.0)
         parameter.grid[j, :] = a * parameter.max + (1.0 - a) * parameter.min
       end
-      parameter.min[1:end] = -Inf
-      parameter.max[1:end] = Inf
+      parameter.min[1:end] .= -Inf
+      parameter.max[1:end] .= Inf
     end
   end
   return parameter
 end # function initialize_optimization_location_score!
+#
+# Method to obtain path to this package's data files
+# so they can be used in the documentation and testing routines.
+# For example, datadir("Control file.txt") will return
+# "/path/to/package/data/Control file.txt"
+#
+datadir(parts...) = joinpath(@__DIR__, "..", "data", parts...)
 
 end # module MendelLocationScores

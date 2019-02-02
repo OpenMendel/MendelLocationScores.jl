@@ -5,7 +5,7 @@ locus_file = location scores LocusFrame.txt
 pedigree_file = location scores PedigreeFrame.txt
 phenotype_file = location scores PhenotypeFrame.txt
 output_file = location scores Output.txt
-lod-score-table = location scores Table Output.txt
+lod-score-table = location scores Output Table.txt
 #
 # Analysis parameters for Location Scores option.
 #
