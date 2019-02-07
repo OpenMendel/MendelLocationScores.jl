@@ -42,7 +42,7 @@ Below is an example of a simple Control file to run Location Scores:
 	#
 	# Analysis parameters for Location Scores option.
 	#
-	disease_status = RADIN
+	trait = RADIN
 	travel = grid
 	gender-neutral = false
 
